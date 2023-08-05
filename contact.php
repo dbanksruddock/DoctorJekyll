@@ -1,24 +1,34 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Retrieve form data
+    $to = "affiliatemarketingcontractcopy@gmail.com";
+    $subject = "Contact Form Submission";
     $name = $_POST["name"];
     $email = $_POST["email"];
     $message = $_POST["message"];
 
-    // Validate and process the data (you can add further validation here)
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        http_response_code(400); // Bad Request
+        exit("Invalid email format");
+    }
+
+    // Build email content
+    $content = "Name: $name\nEmail: $email\n\n$message";
+
+    // Set additional headers
+    $headers = "From: $name <$email>\r\n";
+    $headers .= "Reply-To: $email\r\n";
 
     // Send the email
-    $to = "affiliatemarketingcontractcopy@gmail.com"; // Replace with the actual email address of the operator
-    $subject = "Contact Form Submission";
-    $headers = "From: $email";
-    $mailBody = "Name: $name\nEmail: $email\nMessage: $message";
-
-    if (mail($to, $subject, $mailBody, $headers)) {
-        // Email sent successfully
-        echo "Thank you for your message. We will get back to you shortly.";
+    if (mail($to, $subject, $content, $headers)) {
+        http_response_code(200); // OK
+        echo "Thank you! Your message has been sent successfully.";
     } else {
-        // Error sending email
+        http_response_code(500); // Internal Server Error
         echo "Oops! Something went wrong. Please try again later.";
     }
+} else {
+    http_response_code(405); // Method Not Allowed
+    echo "Method not allowed";
 }
 ?>
