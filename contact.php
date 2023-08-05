@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate and process the data (you can add further validation here)
 
     // Send the email
-    $to = "affiliatemarketcontractcopy@gmail.com"; // Replace with the actual email address of the operator
+    $to = "affiliatemarketingcontractcopy@gmail.com"; // Replace with the actual email address of the operator
     $subject = "Contact Form Submission";
     $headers = "From: $email";
     $mailBody = "Name: $name\nEmail: $email\nMessage: $message";
